@@ -8,14 +8,16 @@ const authRouter = require("./routes/auth");
 // INIT
 const PROT = 3000;
 const app = express();
+const DB =
+  "mongodb+srv://myatsoedev:myatsoedev2580@cluster0.pepznvb.mongodb.net/?retryWrites=true&w=majority";
 
 // middleware
-// CLIENT -> middleware -> SERVER -> CLIENT
+app.use(express.json());
 app.use(authRouter);
 
 // Connections
 mongoose
-  .connect()
+  .connect(DB)
   .then(() => {
     console.log("Connection Successful");
   })
