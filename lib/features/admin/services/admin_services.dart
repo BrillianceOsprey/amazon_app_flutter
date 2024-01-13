@@ -41,11 +41,14 @@ class AdminServices {
         name: name,
         description: description,
         quantity: quantity,
-        images: imageUrls,
+        images: [
+          'https://cdn.pixabay.com/photo/2012/04/23/16/12/click-38743_1280.png'
+        ],
         category: category,
         price: price,
       );
-
+      print(product.toJson());
+      print('$uri/admin/add-product');
       http.Response res = await http.post(
         Uri.parse('$uri/admin/add-product'),
         headers: {
@@ -54,6 +57,7 @@ class AdminServices {
         },
         body: product.toJson(),
       );
+      print(res);
 
       httpErrorHandle(
         response: res,

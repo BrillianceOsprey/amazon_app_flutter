@@ -53,6 +53,7 @@ class ProductDetailsServices {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     try {
+      print('$uri/api/rate-product');
       http.Response res = await http.post(
         Uri.parse('$uri/api/rate-product'),
         headers: {
@@ -64,7 +65,7 @@ class ProductDetailsServices {
           'rating': rating,
         }),
       );
-
+      print(res.body);
       httpErrorHandle(
         response: res,
         context: context,
