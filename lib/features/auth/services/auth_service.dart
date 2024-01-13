@@ -32,7 +32,7 @@ class AuthService {
         token: '',
         cart: [],
       );
-
+      print(Uri.parse('$uri/api/signup'));
       http.Response res = await http.post(
         Uri.parse('$uri/api/signup'),
         body: user.toJson(),
@@ -40,6 +40,7 @@ class AuthService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+      print(res);
 
       httpErrorHandle(
         response: res,
@@ -63,6 +64,8 @@ class AuthService {
     required String password,
   }) async {
     try {
+      print(Uri.parse('$uri/api/signin'));
+
       http.Response res = await http.post(
         Uri.parse('$uri/api/signin'),
         body: jsonEncode({
@@ -73,6 +76,8 @@ class AuthService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+      print(res.body);
+
       // ignore: use_build_context_synchronously
       httpErrorHandle(
         response: res,
