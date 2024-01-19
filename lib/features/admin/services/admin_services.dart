@@ -24,7 +24,7 @@ class AdminServices {
     required String category,
     required List<File> images,
   }) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    // final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     try {
       final cloudinary = CloudinaryPublic('denfgaxvg', 'uszbstnu');
@@ -47,17 +47,14 @@ class AdminServices {
         category: category,
         price: price,
       );
-      print(product.toJson());
-      print('$uri/admin/add-product');
       http.Response res = await http.post(
         Uri.parse('$uri/admin/add-product'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
-          'x-auth-token': userProvider.user.token,
+          'x-auth-token': "userProvider.user.token",
         },
         body: product.toJson(),
       );
-      print(res);
 
       httpErrorHandle(
         response: res,
@@ -74,13 +71,13 @@ class AdminServices {
 
   // get all the products
   Future<List<Product>> fetchAllProducts(BuildContext context) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    // final userProvider = Provider.of<UserProvider>(context, listen: false);
     List<Product> productList = [];
     try {
       http.Response res =
           await http.get(Uri.parse('$uri/admin/get-products'), headers: {
         'Content-Type': 'application/json; charset=UTF-8',
-        'x-auth-token': userProvider.user.token,
+        'x-auth-token': "userProvider.user.token",
       });
 
       httpErrorHandle(
@@ -109,14 +106,14 @@ class AdminServices {
     required Product product,
     required VoidCallback onSuccess,
   }) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    // final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     try {
       http.Response res = await http.post(
         Uri.parse('$uri/admin/delete-product'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
-          'x-auth-token': userProvider.user.token,
+          'x-auth-token': "userProvider.user.token",
         },
         body: jsonEncode({
           'id': product.id,
@@ -136,13 +133,13 @@ class AdminServices {
   }
 
   Future<List<Order>> fetchAllOrders(BuildContext context) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    // final userProvider = Provider.of<UserProvider>(context, listen: false);
     List<Order> orderList = [];
     try {
       http.Response res =
           await http.get(Uri.parse('$uri/admin/get-orders'), headers: {
         'Content-Type': 'application/json; charset=UTF-8',
-        'x-auth-token': userProvider.user.token,
+        'x-auth-token': " userProvider.user.token",
       });
 
       httpErrorHandle(
@@ -172,14 +169,14 @@ class AdminServices {
     required Order order,
     required VoidCallback onSuccess,
   }) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    // final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     try {
       http.Response res = await http.post(
         Uri.parse('$uri/admin/change-order-status'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
-          'x-auth-token': userProvider.user.token,
+          'x-auth-token': "userProvider.user.token",
         },
         body: jsonEncode({
           'id': order.id,

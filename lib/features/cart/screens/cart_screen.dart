@@ -7,16 +7,16 @@ import 'package:amazon_app_flutter/features/search/screens/search_screen.dart';
 import 'package:amazon_app_flutter/providers/user_provider.dart';
 import 'package:amazon_app_flutter/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class CartScreen extends StatefulWidget {
+class CartScreen extends StatefulHookConsumerWidget {
   const CartScreen({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  ConsumerState createState() => _CartScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CartScreenState extends ConsumerState<CartScreen> {
   void navigateToSearchScreen(String query) {
     Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
   }
@@ -31,9 +31,11 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<UserProvider>().user;
+    // final user = context.watch<UserProvider>().user;
+    final user = ref.watch(userProvider);
+
     int sum = 0;
-    user.cart
+    user?.cart
         .map((e) => sum += e['quantity'] * e['product']['price'] as int)
         .toList();
 
@@ -118,7 +120,7 @@ class _CartScreenState extends State<CartScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: CustomButton(
-                text: 'Proceed to Buy (${user.cart.length} items)',
+                text: 'Proceed to Buy (${user?.cart.length} items)',
                 onTap: () => navigateToAddress(sum),
                 color: Colors.yellow[600],
               ),
@@ -130,7 +132,7 @@ class _CartScreenState extends State<CartScreen> {
             ),
             const SizedBox(height: 5),
             ListView.builder(
-              itemCount: user.cart.length,
+              itemCount: user?.cart.length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return CartProduct(

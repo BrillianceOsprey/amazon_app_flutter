@@ -22,6 +22,8 @@
 /// payment configurations that can be modified without the need to update your
 /// application.
 
+// ignore_for_file: dangling_library_doc_comments
+
 /// Sample configuration for Apple Pay. Contains the same content as the file
 /// under `assets/default_payment_profile_apple_pay.json`.
 const String defaultApplePay = '''{

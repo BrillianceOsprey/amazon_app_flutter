@@ -8,7 +8,7 @@ import 'package:amazon_app_flutter/features/product_details/screens/product_deta
 import 'package:amazon_app_flutter/features/search/screens/search_screen.dart';
 import 'package:amazon_app_flutter/models/order.dart';
 import 'package:amazon_app_flutter/models/product.dart';
-import 'package:amazon_app_flutter/widgets/bottom_bar.dart';
+import 'package:amazon_app_flutter/widgets/bottom_bar_page.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -24,10 +24,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         settings: routeSettings,
         builder: (_) => const HomeScreen(),
       );
-    case BottomBar.routeName:
+    case BottomBarPage.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
-        builder: (_) => const BottomBar(),
+        builder: (_) => const BottomBarPage(),
       );
     case AddProductScreen.routeName:
       return MaterialPageRoute(

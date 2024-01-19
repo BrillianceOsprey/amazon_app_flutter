@@ -3,9 +3,9 @@ import 'package:amazon_app_flutter/features/product_details/services/product_det
 import 'package:amazon_app_flutter/models/product.dart';
 import 'package:amazon_app_flutter/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class CartProduct extends StatefulWidget {
+class CartProduct extends StatefulHookConsumerWidget {
   final int index;
   const CartProduct({
     super.key,
@@ -13,10 +13,10 @@ class CartProduct extends StatefulWidget {
   });
 
   @override
-  State<CartProduct> createState() => _CartProductState();
+  ConsumerState createState() => _CartProductState();
 }
 
-class _CartProductState extends State<CartProduct> {
+class _CartProductState extends ConsumerState<CartProduct> {
   final ProductDetailsServices productDetailsServices =
       ProductDetailsServices();
   final CartServices cartServices = CartServices();
@@ -25,19 +25,18 @@ class _CartProductState extends State<CartProduct> {
     productDetailsServices.addToCart(
       context: context,
       product: product,
+      ref: ref,
     );
   }
 
   void decreaseQuantity(Product product) {
-    cartServices.removeFromCart(
-      context: context,
-      product: product,
-    );
+    cartServices.removeFromCart(context: context, product: product, ref: ref);
   }
 
   @override
   Widget build(BuildContext context) {
-    final productCart = context.watch<UserProvider>().user.cart[widget.index];
+    final user = ref.watch(userProvider);
+    final productCart = user?.cart[widget.index];
     final product = Product.fromMap(productCart['product']);
     final quantity = productCart['quantity'];
 

@@ -1,13 +1,13 @@
 import 'package:amazon_app_flutter/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AddressBox extends StatelessWidget {
+class AddressBox extends HookConsumerWidget {
   const AddressBox({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context).user;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProvider);
 
     return Container(
       height: 40,
@@ -31,7 +31,7 @@ class AddressBox extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(left: 5),
               child: Text(
-                'Delivery to ${user.name} - ${user.address}',
+                'Delivery to ${user?.name ?? ''} - ${user?.address ?? ''}',
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                 ),

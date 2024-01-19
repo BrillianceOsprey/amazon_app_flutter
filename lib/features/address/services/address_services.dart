@@ -1,11 +1,11 @@
 // ignore_for_file: use_build_context_synchronously, duplicate_ignore
 
 import 'dart:convert';
+
 import 'package:amazon_app_flutter/constants/error_handling.dart';
 import 'package:amazon_app_flutter/constants/global_variables.dart';
 import 'package:amazon_app_flutter/constants/utils.dart';
 import 'package:amazon_app_flutter/models/product.dart';
-import 'package:amazon_app_flutter/models/user.dart';
 import 'package:amazon_app_flutter/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -16,14 +16,14 @@ class AddressServices {
     required BuildContext context,
     required String address,
   }) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    // final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     try {
       http.Response res = await http.post(
         Uri.parse('$uri/api/save-user-address'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
-          'x-auth-token': userProvider.user.token,
+          'x-auth-token': "userProvider.user.token",
         },
         body: jsonEncode({
           'address': address,
@@ -35,11 +35,11 @@ class AddressServices {
         response: res,
         context: context,
         onSuccess: () {
-          User user = userProvider.user.copyWith(
-            address: jsonDecode(res.body)['address'],
-          );
+          // User user = userProvider.user.copyWith(
+          //   address: jsonDecode(res.body)['address'],
+          // );
 
-          userProvider.setUserFromModel(user);
+          // userProvider.setUserFromModel(user);
         },
       );
     } catch (e) {
@@ -53,16 +53,17 @@ class AddressServices {
     required String address,
     required double totalSum,
   }) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    // final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     try {
       http.Response res = await http.post(Uri.parse('$uri/api/order'),
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
-            'x-auth-token': userProvider.user.token,
+            'x-auth-token': "userProvider.user.token",
           },
           body: jsonEncode({
-            'cart': userProvider.user.cart,
+            // 'cart': userProvider.user.cart,
+            'cart': {},
             'address': address,
             'totalPrice': totalSum,
           }));
@@ -71,11 +72,11 @@ class AddressServices {
         response: res,
         context: context,
         onSuccess: () {
-          showSnackBar(context, 'Your order has been placed!');
-          User user = userProvider.user.copyWith(
-            cart: [],
-          );
-          userProvider.setUserFromModel(user);
+          // showSnackBar(context, 'Your order has been placed!');
+          // User user = userProvider.user.copyWith(
+          //   cart: [],
+          // );
+          // userProvider.setUserFromModel(user);
         },
       );
     } catch (e) {

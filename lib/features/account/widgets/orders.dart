@@ -5,15 +5,16 @@ import 'package:amazon_app_flutter/features/order_details/screens/order_details.
 import 'package:amazon_app_flutter/models/order.dart';
 import 'package:amazon_app_flutter/widgets/loader.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class Orders extends StatefulWidget {
+class Orders extends StatefulHookConsumerWidget {
   const Orders({super.key});
 
   @override
-  State<Orders> createState() => _OrdersState();
+  OrdersState createState() => OrdersState();
 }
 
-class _OrdersState extends State<Orders> {
+class OrdersState extends ConsumerState<Orders> {
   List<Order>? orders;
   final AccountServices accountServices = AccountServices();
 
@@ -24,7 +25,10 @@ class _OrdersState extends State<Orders> {
   }
 
   void fetchOrders() async {
-    orders = await accountServices.fetchMyOrders(context: context);
+    // orders = await accountServices.fetchMyOrders(context: context, ref: ref);
+    orders = await ref
+        .read(accountServicesProvider)
+        .fetchMyOrders(context: context, ref: ref);
     setState(() {});
   }
 

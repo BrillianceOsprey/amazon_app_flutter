@@ -65,33 +65,33 @@ class _AddressScreenState extends State<AddressScreen> {
   }
 
   void onApplePayResult(res) {
-    if (Provider.of<UserProvider>(context, listen: false)
-        .user
-        .address
-        .isEmpty) {
-      addressServices.saveUserAddress(
-          context: context, address: addressToBeUsed);
-    }
-    addressServices.placeOrder(
-      context: context,
-      address: addressToBeUsed,
-      totalSum: double.parse(widget.totalAmount),
-    );
+    // if (Provider.of<UserProvider>(context, listen: false)
+    //     .user
+    //     .address
+    //     .isEmpty) {
+    //   addressServices.saveUserAddress(
+    //       context: context, address: addressToBeUsed);
+    // }
+    // addressServices.placeOrder(
+    //   context: context,
+    //   address: addressToBeUsed,
+    //   totalSum: double.parse(widget.totalAmount),
+    // );
   }
 
   void onGooglePayResult(res) {
-    if (Provider.of<UserProvider>(context, listen: false)
-        .user
-        .address
-        .isEmpty) {
-      addressServices.saveUserAddress(
-          context: context, address: addressToBeUsed);
-    }
-    addressServices.placeOrder(
-      context: context,
-      address: addressToBeUsed,
-      totalSum: double.parse(widget.totalAmount),
-    );
+    // if (Provider.of<UserProvider>(context, listen: false)
+    //     .user
+    //     .address
+    //     .isEmpty) {
+    //   addressServices.saveUserAddress(
+    //       context: context, address: addressToBeUsed);
+    // }
+    // addressServices.placeOrder(
+    //   context: context,
+    //   address: addressToBeUsed,
+    //   totalSum: double.parse(widget.totalAmount),
+    // );
   }
 
   void payPressed(String addressFromProvider) {

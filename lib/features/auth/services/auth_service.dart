@@ -2,16 +2,19 @@
 
 import 'dart:convert';
 
+import 'package:amazon_app_flutter/config/logger/logger.dart';
 import 'package:amazon_app_flutter/constants/error_handling.dart';
 import 'package:amazon_app_flutter/constants/global_variables.dart';
 import 'package:amazon_app_flutter/constants/utils.dart';
 import 'package:amazon_app_flutter/models/user.dart';
 import 'package:amazon_app_flutter/providers/user_provider.dart';
-import 'package:amazon_app_flutter/widgets/bottom_bar.dart';
+import 'package:amazon_app_flutter/widgets/bottom_bar_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+part 'auth_service.g.dart';
 
 class AuthService {
   // sign up user
@@ -32,7 +35,7 @@ class AuthService {
         token: '',
         cart: [],
       );
-      print(Uri.parse('$uri/api/signup'));
+      logger.t(Uri.parse('$uri/api/signup'));
       http.Response res = await http.post(
         Uri.parse('$uri/api/signup'),
         body: user.toJson(),
@@ -40,7 +43,7 @@ class AuthService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
-      print(res);
+      logger.d(res);
 
       httpErrorHandle(
         response: res,
@@ -58,14 +61,12 @@ class AuthService {
   }
 
   // sign in user
-  void signInUser({
-    required BuildContext context,
-    required String email,
-    required String password,
-  }) async {
+  void signInUser(
+      {required BuildContext context,
+      required String email,
+      required String password,
+      required WidgetRef ref}) async {
     try {
-      print(Uri.parse('$uri/api/signin'));
-
       http.Response res = await http.post(
         Uri.parse('$uri/api/signin'),
         body: jsonEncode({
@@ -76,7 +77,6 @@ class AuthService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
-      print(res.body);
 
       // ignore: use_build_context_synchronously
       httpErrorHandle(
@@ -84,11 +84,12 @@ class AuthService {
         context: context,
         onSuccess: () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          Provider.of<UserProvider>(context, listen: false).setUser(res.body);
+          // Provider.of<UserProvider>(context, listen: false).setUser(res.body);
+          ref.read(userProvider.notifier).state = User.fromJson(res.body);
           await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
           Navigator.pushNamedAndRemoveUntil(
             context,
-            BottomBar.routeName,
+            BottomBarPage.routeName,
             (route) => false,
           );
         },
@@ -99,9 +100,7 @@ class AuthService {
   }
 
   // get user data
-  void getUserData(
-    BuildContext context,
-  ) async {
+  void getUserData(BuildContext context, WidgetRef ref) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('x-auth-token');
@@ -129,11 +128,18 @@ class AuthService {
           },
         );
 
-        var userProvider = Provider.of<UserProvider>(context, listen: false);
-        userProvider.setUser(userRes.body);
+        // var userProvider = Provider.of<UserProvider>(context, listen: false);
+        // userProvider.setUser(userRes.body);
+        final user = User.fromJson(userRes.body);
+        ref.read(userProvider.notifier).state = user;
       }
     } catch (e) {
       showSnackBar(context, e.toString());
     }
   }
+}
+
+@riverpod
+AuthService authService(AuthServiceRef ref) {
+  return AuthService();
 }

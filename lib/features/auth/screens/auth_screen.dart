@@ -3,21 +3,22 @@ import 'package:amazon_app_flutter/features/auth/services/auth_service.dart';
 import 'package:amazon_app_flutter/widgets/custom_button.dart';
 import 'package:amazon_app_flutter/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 enum Auth {
   signin,
   signup,
 }
 
-class AuthScreen extends StatefulWidget {
+class AuthScreen extends StatefulHookConsumerWidget {
   static const String routeName = '/auth-screen';
   const AuthScreen({super.key});
 
   @override
-  State<AuthScreen> createState() => _AuthScreenState();
+  ConsumerState createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
+class _AuthScreenState extends ConsumerState<AuthScreen> {
   Auth _auth = Auth.signup;
   final _signUpFormKey = GlobalKey<FormState>();
   final _signInFormKey = GlobalKey<FormState>();
@@ -35,20 +36,26 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void signUpUser() {
-    authService.signUpUser(
-      context: context,
-      email: _emailController.text,
-      password: _passwordController.text,
-      name: _nameController.text,
-    );
+    ref.read(authServiceProvider).signUpUser(
+          context: context,
+          email: _emailController.text,
+          password: _passwordController.text,
+          name: _nameController.text,
+        );
   }
 
   void signInUser() {
-    authService.signInUser(
-      context: context,
-      email: _emailController.text,
-      password: _passwordController.text,
-    );
+    // authService.signInUser(
+    //   context: context,
+    //   email: _emailController.text,
+    //   password: _passwordController.text,
+    // );
+    ref.read(authServiceProvider).signInUser(
+          context: context,
+          email: _emailController.text,
+          password: _passwordController.text,
+          ref: ref,
+        );
   }
 
   @override

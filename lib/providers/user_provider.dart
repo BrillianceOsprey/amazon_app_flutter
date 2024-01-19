@@ -1,5 +1,6 @@
 import 'package:amazon_app_flutter/models/user.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserProvider extends ChangeNotifier {
   User _user = User(
@@ -25,3 +26,5 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+final userProvider = StateProvider<User?>((ref) => null);

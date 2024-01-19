@@ -1,15 +1,16 @@
 import 'package:amazon_app_flutter/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class CartSubtotal extends StatelessWidget {
+class CartSubtotal extends HookConsumerWidget {
   const CartSubtotal({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final user = context.watch<UserProvider>().user;
+  Widget build(BuildContext context, WidgetRef ref) {
+    // final user = context.watch<UserProvider>().user;
+    final user = ref.watch(userProvider);
     int sum = 0;
-    user.cart
+    user?.cart
         .map((e) => sum += e['quantity'] * e['product']['price'] as int)
         .toList();
 

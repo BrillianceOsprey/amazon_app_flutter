@@ -4,10 +4,7 @@ import 'package:amazon_app_flutter/features/home/widgets/carousel_image.dart';
 import 'package:amazon_app_flutter/features/home/widgets/deal_of_day.dart';
 import 'package:amazon_app_flutter/features/home/widgets/top_categories.dart';
 import 'package:amazon_app_flutter/features/search/screens/search_screen.dart';
-import 'package:amazon_app_flutter/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';

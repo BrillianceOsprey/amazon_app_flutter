@@ -9,9 +9,9 @@ import 'package:amazon_app_flutter/constants/global_variables.dart';
 import 'package:amazon_app_flutter/features/search/screens/search_screen.dart';
 import 'package:amazon_app_flutter/models/product.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ProductDetailScreen extends StatefulWidget {
+class ProductDetailScreen extends StatefulHookConsumerWidget {
   static const String routeName = '/product-details';
   final Product product;
   const ProductDetailScreen({
@@ -20,10 +20,10 @@ class ProductDetailScreen extends StatefulWidget {
   });
 
   @override
-  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+  ConsumerState createState() => _ProductDetailScreenState();
 }
 
-class _ProductDetailScreenState extends State<ProductDetailScreen> {
+class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   final ProductDetailsServices productDetailsServices =
       ProductDetailsServices();
   double avgRating = 0;
@@ -35,8 +35,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     double totalRating = 0;
     for (int i = 0; i < widget.product.rating!.length; i++) {
       totalRating += widget.product.rating![i].rating;
-      if (widget.product.rating![i].userId ==
-          Provider.of<UserProvider>(context, listen: false).user.id) {
+      if (widget.product.rating![i].userId == ref.watch(userProvider)?.id) {
         myRating = widget.product.rating![i].rating;
       }
     }
@@ -54,6 +53,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     productDetailsServices.addToCart(
       context: context,
       product: widget.product,
+      ref: ref,
     );
   }
 

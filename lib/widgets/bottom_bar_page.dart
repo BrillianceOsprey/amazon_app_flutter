@@ -3,19 +3,21 @@ import 'package:amazon_app_flutter/features/account/screens/account_screen.dart'
 import 'package:amazon_app_flutter/features/cart/screens/cart_screen.dart';
 import 'package:amazon_app_flutter/features/home/screens/home_screen.dart';
 import 'package:amazon_app_flutter/providers/user_provider.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class BottomBar extends StatefulWidget {
+@RoutePage()
+class BottomBarPage extends StatefulHookConsumerWidget {
   static const String routeName = '/actual-home';
-  const BottomBar({super.key});
+  const BottomBarPage({super.key});
 
   @override
-  State<BottomBar> createState() => _BottomBarState();
+  ConsumerState createState() => _BottomBarState();
 }
 
-class _BottomBarState extends State<BottomBar> {
+class _BottomBarState extends ConsumerState<BottomBarPage> {
   int _page = 0;
   double bottomBarWidth = 42;
   double bottomBarBorderWidth = 5;
@@ -34,7 +36,8 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    final userCartLen = context.watch<UserProvider>().user.cart.length;
+    // final userCartLen = context.watch<UserProvider>().user.cart.length;
+    final userCartLen = ref.watch(userProvider);
 
     return Scaffold(
       body: pages[_page],
